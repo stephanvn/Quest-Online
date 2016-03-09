@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rbody;
     Animator anim;
+    List<GameObject> inventory;
 
     void Start()
     {
         rbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        inventory = new List<GameObject>();
     }
 
     void Update()
@@ -52,7 +55,14 @@ public class PlayerController : MonoBehaviour
             anim.speed = .2f;
         }
         
-        
+    }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("pickUp"))
+        {
+            other.gameObject.SetActive(false);
+            inventory.Add(other.gameObject);
+        }
     }
 }
