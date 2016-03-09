@@ -3,8 +3,8 @@ using System.Collections;
 
 public class NetworkManager : MonoBehaviour
 {
-    private const string typeName = "UniqueGameName";
-    private const string gameName = "RoomName";
+    private const string typeName = "QuestOnlineRPGenius";
+    private const string gameName = "RPGENIUS";
 
     private bool isRefreshingHostList = false;
     private HostData[] hostList;
@@ -13,7 +13,7 @@ public class NetworkManager : MonoBehaviour
 
     void OnGUI()
     {
-        /*if (!Network.isClient && !Network.isServer)
+        if (!Network.isClient && !Network.isServer)
         {
             if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server"))
                 StartServer();
@@ -29,7 +29,7 @@ public class NetworkManager : MonoBehaviour
                         JoinServer(hostList[i]);
                 }
             }
-        }*/
+        }
     }
 
     private void StartServer()
@@ -40,7 +40,7 @@ public class NetworkManager : MonoBehaviour
 
     void OnServerInitialized()
     {
-        SpawnPlayer();
+        SpawnPlayer(Network.connections.Length);
     }
 
 
@@ -70,12 +70,20 @@ public class NetworkManager : MonoBehaviour
 
     void OnConnectedToServer()
     {
-        SpawnPlayer();
+
+        
+        SpawnPlayer(Network.connections.Length);
     }
 
 
-    private void SpawnPlayer()
+    private void SpawnPlayer(int players)
     {
-        Network.Instantiate(playerPrefab, Vector3.up * 5, Quaternion.identity, 0);
+        Vector3 pos = playerPrefab.transform.position;
+        if (players > 0)
+        {
+            pos.x += 1;
+        }
+        Network.Instantiate(playerPrefab, pos, playerPrefab.transform.rotation, 0);
+
     }
 }
