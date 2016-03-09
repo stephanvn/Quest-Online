@@ -9,8 +9,6 @@ public class PlayerController : MonoBehaviour
     List<GameObject> inventory;
     bool showInventory = false;
     Rect dialogueRect = new Rect(700, 150, 500, 500);
-    public float keyDelay = 0.1f;  // 0.1 second
-    private float timePassed = 0f;
 
     void Start()
     {
@@ -36,9 +34,7 @@ public class PlayerController : MonoBehaviour
         }
         rbody.MovePosition(rbody.position + movement_vector * Time.deltaTime);
 
-        timePassed += Time.deltaTime;
-
-        if (Input.GetKey("i") && timePassed >= keyDelay)
+        if (Input.GetKeyDown("i"))
         {
             if (showInventory)
             {
@@ -47,7 +43,6 @@ public class PlayerController : MonoBehaviour
             else {
                 showInventory = true;
             }
-            timePassed = 0f;
         }
 
         /*Vector2 movement_horizontal = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
