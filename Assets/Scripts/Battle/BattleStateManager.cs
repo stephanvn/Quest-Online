@@ -15,6 +15,7 @@ public class BattleStateManager : MonoBehaviour {
 
 	void Start () {
         currentState = BattleStates.INIT;
+
 	}
 	
 	void Update () {

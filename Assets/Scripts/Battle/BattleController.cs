@@ -1,23 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BattleController : MonoBehaviour {
-
+    public enum BattleStates
+    {
+        INIT,
+        PLAYERCHOICE,
+        ENEMYCHOICE,
+        PROCESSBATTLE,
+        LOSE,
+        WIN
+    }
+    private BattleStates currentState;
     private bool battle = true;
     private int party = 1;
-    public GameObject battleMenu;
-    public GameObject[] enemies = new GameObject[1];
+    private List<Monster> enemies = new List<Monster>();
 
     void Start()
     {
-        while (battle)
-        {
-            PlayerChoice();
-            WaitOtherPlayerChoice(); //Placeholder until netcode is implemented
-            EnemyChoice(); //Will be server side eventually
-            ProcessBattle();
-            CheckBattleStatus();
-        }
+        currentState = BattleStates.INIT;
+        enemies.Add(new Slime());
+        enemies.Add(new Slime());
+        enemies.Add(new Slime());
+        currentState = BattleStates.PLAYERCHOICE;
     }
 	
     private void PlayerChoice()
@@ -32,15 +38,15 @@ public class BattleController : MonoBehaviour {
 
     private void EnemyChoice()
     {
-        for (int i = 0; i < enemies.Length; i++)
+        foreach (Monster e in enemies)
         {
-            //enemies[i].battleChoice = enemies[i].MakeBattleChoice();
+
         }
     }
 
     private void ProcessBattle()
     {
-
+        //Animation logic will go here
     }
 
     private void CheckBattleStatus()
@@ -48,6 +54,10 @@ public class BattleController : MonoBehaviour {
         if (!PlayersAreAlive())
         {
             Debug.Log("All players are dead");
+        }
+        else
+        {
+
         }
     }
 

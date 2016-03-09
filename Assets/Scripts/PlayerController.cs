@@ -32,8 +32,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-       
-
         if (Input.GetKeyDown("i"))
         {
             if (showInventory)
@@ -56,8 +54,6 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
-
 
     void OnTriggerEnter2D(Collider2D other)
     {
