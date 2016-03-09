@@ -7,6 +7,10 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rbody;
     Animator anim;
     List<GameObject> inventory;
+    bool showInventory = false;
+    Rect dialogueRect = new Rect(700, 150, 500, 500);
+    public float keyDelay = 0.1f;  // 0.1 second
+    private float timePassed = 0f;
 
     void Start()
     {
@@ -54,6 +58,21 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("iswalking", false);
             anim.speed = .2f;
         }
+
+        timePassed += Time.deltaTime;
+
+        if (Input.GetKey("i") && timePassed >= keyDelay)
+        {            
+            if (showInventory)
+            {
+                showInventory = false;
+            }
+            else {
+                showInventory = true;
+            }
+            timePassed = 0f;
+
+        }
         
     }
 
@@ -65,4 +84,33 @@ public class PlayerController : MonoBehaviour
             inventory.Add(other.gameObject);
         }
     }
+
+    void OnGUI()
+    {
+        if (showInventory)
+        {
+            GUI.Box(dialogueRect, "Inventory");
+            Rect spriteRect = new Rect(720, 200, 100, 100);
+            GUIStyle currentStyle = new GUIStyle(GUI.skin.box);
+
+            int counter = 0;
+            foreach (GameObject g in inventory)
+            {
+                SpriteRenderer r = g.GetComponent<SpriteRenderer>();
+                currentStyle.normal.background = r.sprite.texture;
+                GUI.Box(spriteRect, g.name, currentStyle);
+                if (counter == 3)
+                {
+                    spriteRect.x = 720;
+                    spriteRect.y = 350;
+                }
+                else
+                {
+                    spriteRect.x += 120;
+                }
+                counter++;
+            }
+        }
+    }
+
 }
