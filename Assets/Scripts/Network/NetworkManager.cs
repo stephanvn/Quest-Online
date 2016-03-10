@@ -3,87 +3,48 @@ using System.Collections;
 
 public class NetworkManager : MonoBehaviour
 {
-    private const string typeName = "QuestOnlineRPGenius";
-    private const string gameName = "RPGENIUS";
 
-    private bool isRefreshingHostList = false;
-    private HostData[] hostList;
+    SpawnSpot[] spawnSpots;
 
-    public GameObject playerPrefab;
+    void Start()
+    {
+        spawnSpots = GameObject.FindObjectsOfType<SpawnSpot>();
+        Connect();
+    }
+
+    void Connect()
+    {
+        PhotonNetwork.ConnectUsingSettings("RPGenius v001");
+    }
 
     void OnGUI()
     {
-        if (!Network.isClient && !Network.isServer)
-        {
-            if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server"))
-                StartServer();
-
-            if (GUI.Button(new Rect(100, 250, 250, 100), "Refresh Hosts"))
-                RefreshHostList();
-
-            if (hostList != null)
-            {
-                for (int i = 0; i < hostList.Length; i++)
-                {
-                    if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName))
-                        JoinServer(hostList[i]);
-                }
-            }
-        }
+        GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
     }
 
-    private void StartServer()
+    void OnJoinedLobby()
     {
-        Network.InitializeServer(5, 25000, !Network.HavePublicAddress());
-        MasterServer.RegisterHost(typeName, gameName);
+        Debug.Log("OnJoinedLobby");
+        PhotonNetwork.JoinRandomRoom();
     }
 
-    void OnServerInitialized()
+    void OnPhotonRandomJoinFailed()
     {
-        SpawnPlayer(Network.connections.Length);
+        Debug.Log("OnPhotonRandomJoinFailed");
+        PhotonNetwork.CreateRoom(null);
     }
 
-
-    void Update()
+    void OnJoinedRoom()
     {
-        if (isRefreshingHostList && MasterServer.PollHostList().Length > 0)
-        {
-            isRefreshingHostList = false;
-            hostList = MasterServer.PollHostList();
-        }
+        Debug.Log("OnJoinedRoom");
+
+        PhotonPlayer[] otherList = PhotonNetwork.otherPlayers;
+        SpawnMyPlayer(otherList.Length);
     }
 
-    private void RefreshHostList()
-    {
-        if (!isRefreshingHostList)
-        {
-            isRefreshingHostList = true;
-            MasterServer.RequestHostList(typeName);
-        }
-    }
-
-
-    private void JoinServer(HostData hostData)
-    {
-        Network.Connect(hostData);
-    }
-
-    void OnConnectedToServer()
-    {
-
-        
-        SpawnPlayer(Network.connections.Length);
-    }
-
-
-    private void SpawnPlayer(int players)
-    {
-        Vector3 pos = playerPrefab.transform.position;
-        if (players > 0)
-        {
-            pos.x += 1;
-        }
-        Network.Instantiate(playerPrefab, pos, playerPrefab.transform.rotation, 0);
-
+    void SpawnMyPlayer(int players)
+    {             
+        SpawnSpot mySpawnSpot = spawnSpots[players];
+        PhotonNetwork.Instantiate("MainPlayer", mySpawnSpot.transform.position, mySpawnSpot.transform.rotation, 0);
     }
 }
