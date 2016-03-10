@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class Slime : Monster {
+    public GameObject myMob;
 
     public Slime()
     {
@@ -13,6 +14,13 @@ public class Slime : Monster {
         vit = 1;
         agi = 1;
         dex = 1;
+        GameObject obj = new GameObject("Monster");
+        obj.transform.Translate(1, 0, 1);
+
+        Sprite mySprite= Resources.Load("mob_slime") as Sprite;
+        Debug.Log(mySprite);
+        SpriteRenderer spr = obj.AddComponent<SpriteRenderer>();
+        spr.sprite = mySprite;
     }
 
     public int DecideTurn()

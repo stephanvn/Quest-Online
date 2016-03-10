@@ -20,10 +20,12 @@ public class BattleController : MonoBehaviour {
     void Start()
     {
         currentState = BattleStates.INIT;
+        Debug.Log(currentState);
         enemies.Add(new Slime());
         enemies.Add(new Slime());
         enemies.Add(new Slime());
         currentState = BattleStates.PLAYERCHOICE;
+        Debug.Log(currentState);
     }
 	
     private void PlayerChoice()

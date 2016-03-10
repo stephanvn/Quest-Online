@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Monster {
+public class Monster
+{
     public string name;
+    public Sprite mySprite;
     public int lvl, atk, str, vit, dex, intl, luk, agi;
 
     public Monster()
