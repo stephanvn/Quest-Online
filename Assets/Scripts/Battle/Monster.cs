@@ -5,6 +5,7 @@ public class Monster
 {
     public string name;
     public Sprite mySprite;
+    public string path = "Sprites/Combat/";
     public int lvl, atk, str, vit, dex, intl, luk, agi;
 
     public Monster()
