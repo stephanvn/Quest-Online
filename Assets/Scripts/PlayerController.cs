@@ -18,20 +18,21 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update()
-    {
-        if (Input.GetKeyDown("i"))
-        {
-            if (showInventory)
-            {
-                showInventory = false;
-            }
-            else {
-                showInventory = true;
-            }
-        }
+    {       
 
         if (GetComponent<PhotonView>().isMine)
         {
+            if (Input.GetKeyDown("i"))
+            {
+                if (showInventory)
+                {
+                    showInventory = false;
+                }
+                else {
+                    showInventory = true;
+                }
+            }
+
             Vector2 movement_vector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 			if (movement_vector != Vector2.zero)
 			{
