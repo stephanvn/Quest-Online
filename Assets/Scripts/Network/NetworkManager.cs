@@ -17,6 +17,11 @@ public class NetworkManager : MonoBehaviour
         PhotonNetwork.ConnectUsingSettings("RPGenius v001");
     }
 
+    public void Disconnect()
+    {
+        PhotonNetwork.Disconnect();
+    }
+
     void OnGUI()
     {
         GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
@@ -43,8 +48,8 @@ public class NetworkManager : MonoBehaviour
     }
 
     void SpawnMyPlayer(int players)
-    {             
-        SpawnSpot mySpawnSpot = spawnSpots[players];
+    {
+        SpawnSpot mySpawnSpot = spawnSpots[0];
         PhotonNetwork.Instantiate("MainPlayer", mySpawnSpot.transform.position, mySpawnSpot.transform.rotation, 0);
     }
 }
