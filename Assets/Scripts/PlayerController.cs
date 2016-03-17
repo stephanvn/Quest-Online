@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
             obj.GetComponent<SpriteRenderer>().sprite = spr;
             //inventory.Add(other.gameObject);
             collected+=1;
-            total--;
+            total -= 1;
 
             if (GetComponent<PhotonView>().isMine)
             {
