@@ -59,9 +59,13 @@ public class PlayerController : MonoBehaviour
             collected+=1;
             total--;
 
-            GameObject.Find("found_amount").GetComponent<Text>().text = collected.ToString();
+            if (GetComponent<PhotonView>().isMine)
+            {
+                GameObject.Find("found_amount").GetComponent<Text>().text = collected.ToString();
+            }
+               
             GameObject.Find("left_amount").GetComponent<Text>().text = total.ToString();
-            scoreCount.text = collected.ToString();
+            //scoreCount.text = collected.ToString();
             Destroy(obj);
         }
     } 
