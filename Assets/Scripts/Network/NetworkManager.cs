@@ -50,6 +50,6 @@ public class NetworkManager : MonoBehaviour
     void SpawnMyPlayer(int players)
     {
         SpawnSpot mySpawnSpot = spawnSpots[0];
-        PhotonNetwork.Instantiate("MainPlayer", mySpawnSpot.transform.position, mySpawnSpot.transform.rotation, 0);
+        PhotonNetwork.Instantiate("Prefabs/MainPlayer", mySpawnSpot.transform.position, mySpawnSpot.transform.rotation, 0);
     }
 }

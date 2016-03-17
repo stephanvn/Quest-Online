@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class PlayerController : MonoBehaviour
     List<GameObject> inventory;
     bool showInventory = false;
     Rect dialogueRect = new Rect(700, 150, 500, 500);
+    int collected = 0;
+    int total = 16;
+    public Text scoreCount;
+    public Text totalCount;
 
     void Start()
     {
@@ -19,20 +24,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {       
-
         if (GetComponent<PhotonView>().isMine)
         {
-            if (Input.GetKeyDown("i"))
-            {
-                if (showInventory)
-                {
-                    showInventory = false;
-                }
-                else {
-                    showInventory = true;
-                }
-            }
-
             Vector2 movement_vector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 			if (movement_vector != Vector2.zero)
 			{
@@ -48,15 +41,23 @@ public class PlayerController : MonoBehaviour
 			}
 			rbody.MovePosition(rbody.position + movement_vector * Time.deltaTime);
         }
+        else
+        {
 
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("pickUp"))
+        GameObject obj = other.gameObject;
+        if (other.gameObject.CompareTag("pickUp")) //&& obj.GetComponent(treasureController).checkTaken() == false)
         {
-            other.gameObject.SetActive(false);
-            inventory.Add(other.gameObject);
+            //other.taken = true;
+            Sprite spr = Resources.Load("Sprites/Objects/box2", typeof(Sprite)) as Sprite;
+            obj.GetComponent<SpriteRenderer>().sprite = spr;
+            //inventory.Add(other.gameObject);
+            collected+=1;
+            scoreCount.text = collected.ToString();
         }
     } 
 
