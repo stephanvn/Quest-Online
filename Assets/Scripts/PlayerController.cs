@@ -64,8 +64,8 @@ public class PlayerController : MonoBehaviour
                 collected += 1;
                 GameObject.Find("found_amount").GetComponent<Text>().text = collected.ToString();
             }
-
-            total -= Int32.Parse(GameObject.Find("left_amount").GetComponent<Text>().text);
+            
+            total = Int32.Parse(GameObject.Find("left_amount").GetComponent<Text>().text) - 1;
             GameObject.Find("left_amount").GetComponent<Text>().text = total.ToString();
             //scoreCount.text = collected.ToString();
             other.gameObject.tag = "Untagged";
