@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -64,7 +65,7 @@ public class PlayerController : MonoBehaviour
                 GameObject.Find("found_amount").GetComponent<Text>().text = collected.ToString();
             }
 
-            total -= 1;
+            total -= Int32.Parse(GameObject.Find("left_amount").GetComponent<Text>().text);
             GameObject.Find("left_amount").GetComponent<Text>().text = total.ToString();
             //scoreCount.text = collected.ToString();
             other.gameObject.tag = "Untagged";
