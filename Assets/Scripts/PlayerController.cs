@@ -55,18 +55,19 @@ public class PlayerController : MonoBehaviour
             //other.taken = true;
             Sprite spr = Resources.Load("Sprites/Objects/box2", typeof(Sprite)) as Sprite;
             obj.GetComponent<SpriteRenderer>().sprite = spr;
-            //inventory.Add(other.gameObject);
-            collected+=1;
-            total -= 1;
+            //inventory.Add(other.gameObject);    
+            
 
             if (GetComponent<PhotonView>().isMine)
             {
+                collected += 1;
                 GameObject.Find("found_amount").GetComponent<Text>().text = collected.ToString();
             }
-               
+
+            total -= 1;
             GameObject.Find("left_amount").GetComponent<Text>().text = total.ToString();
             //scoreCount.text = collected.ToString();
-            Destroy(obj);
+            other.gameObject.tag = "Untagged";
         }
     } 
 
