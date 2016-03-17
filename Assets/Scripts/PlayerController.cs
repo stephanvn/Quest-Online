@@ -57,7 +57,12 @@ public class PlayerController : MonoBehaviour
             obj.GetComponent<SpriteRenderer>().sprite = spr;
             //inventory.Add(other.gameObject);
             collected+=1;
+            total--;
+
+            GameObject.Find("found_amount").GetComponent<Text>().text = collected.ToString();
+            GameObject.Find("left_amount").GetComponent<Text>().text = total.ToString();
             scoreCount.text = collected.ToString();
+            Destroy(obj);
         }
     } 
 
