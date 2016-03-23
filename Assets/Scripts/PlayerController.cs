@@ -8,19 +8,23 @@ public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rbody;
     Animator anim;
-    List<GameObject> inventory;
-    bool showInventory = false;
-    Rect dialogueRect = new Rect(700, 150, 500, 500);
+    bool gameFinished = false;
     int collected = 0;
     int total = 16;
-    public Text scoreCount;
-    public Text totalCount;
+    string winString = " won the game!";
+    int winID;
+    int runonce = 0;    
 
     void Start()
     {
         rbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        inventory = new List<GameObject>();
+        PhotonView pv = GetComponent<PhotonView>();
+
+        if (GetComponent<PhotonView>().isMine)
+        {
+            GameObject.Find("Username").GetComponent<Text>().text = "P: " + pv.viewID;
+        }
     }
 
     void Update()
@@ -40,63 +44,59 @@ public class PlayerController : MonoBehaviour
 				anim.SetBool("iswalking", false);
 				anim.speed = .2f;
 			}
-			rbody.MovePosition(rbody.position + movement_vector * Time.deltaTime);
-        }
-        else
-        {
-
+			rbody.MovePosition(rbody.position + movement_vector * Time.deltaTime);            
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         GameObject obj = other.gameObject;
-        if (other.gameObject.CompareTag("pickUp")) //&& obj.GetComponent(treasureController).checkTaken() == false)
+        if (other.gameObject.CompareTag("pickUp"))
         {
-            //other.taken = true;
             Sprite spr = Resources.Load("Sprites/Objects/box2", typeof(Sprite)) as Sprite;
             obj.GetComponent<SpriteRenderer>().sprite = spr;
-            //inventory.Add(other.gameObject);    
-            
 
+            collected += 1;
             if (GetComponent<PhotonView>().isMine)
             {
-                collected += 1;
+                
                 GameObject.Find("found_amount").GetComponent<Text>().text = collected.ToString();
             }
             
             total = Int32.Parse(GameObject.Find("left_amount").GetComponent<Text>().text) - 1;
             GameObject.Find("left_amount").GetComponent<Text>().text = total.ToString();
-            //scoreCount.text = collected.ToString();
             other.gameObject.tag = "Untagged";
+
+            if(total == 13)
+            {
+                gameFinished = true;
+                Time.timeScale = 0;
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                int winCount = 0;
+                
+                foreach (GameObject player in players)
+                {
+                    PlayerController pc = (PlayerController)player.GetComponent(typeof(PlayerController));
+                    if(pc.collected > winCount)
+                    {
+                        winCount = pc.collected;
+                        winID = pc.GetComponent<PhotonView>().viewID;
+                    }
+                }
+            }
         }
     } 
 
     void OnGUI()
     {
-        if (showInventory)
+        if (gameFinished)
         {
-            GUI.Box(dialogueRect, "Inventory");
-            Rect spriteRect = new Rect(720, 200, 100, 100);
-            GUIStyle currentStyle = new GUIStyle(GUI.skin.box);
-
-            int counter = 0;
-            foreach (GameObject g in inventory)
-            {
-                SpriteRenderer r = g.GetComponent<SpriteRenderer>();
-                currentStyle.normal.background = r.sprite.texture;
-                GUI.Box(spriteRect, g.name, currentStyle);
-                if (counter == 3)
-                {
-                    spriteRect.x = 720;
-                    spriteRect.y = 350;
-                }
-                else
-                {
-                    spriteRect.x += 120;
-                }
-                counter++;
+            if (runonce == 0)
+            {                
+                winString = GUI.TextField(new Rect(600, 200, 200, 200), "Player " + winID + winString, 100);
+                runonce = 1;
             }
+            GUI.TextField(new Rect(720, 200, 200, 200), winString, 100);
         }
     }
 }

@@ -7,7 +7,6 @@ public class UIManager : MonoBehaviour {
 	public Text username;
 	public Text treasure_found;
 	public Text treasure_remaining;
-	public string playerName;
 	public int found;
 	public int left;
 
@@ -19,7 +18,6 @@ public class UIManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//hp.text = "HP: " + playerHP;
-		username.text = playerName;
 		//level.text = "Level: " + playerLvl;
 	}
 }
