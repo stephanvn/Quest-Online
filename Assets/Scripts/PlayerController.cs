@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     string winString = " won the game!";
     int winID;
     int runonce = 0;
+    int time = 1500;
 
     void Start()
     {
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
         {
             GameObject.Find("Username").GetComponent<Text>().text = "P: " + pv.viewID;
         }
+
     }
 
     void Update()
@@ -45,6 +47,22 @@ public class PlayerController : MonoBehaviour
 				anim.speed = .2f;
 			}
 			rbody.MovePosition(rbody.position + movement_vector * Time.deltaTime);            
+        }
+
+        if (time > 0)
+        {
+            time -= 1;
+            GameObject.Find("WinText").GetComponent<Text>().text = "Time left until start: " + (time / 60);
+        }
+
+        if (time <= 0)
+        {
+            GameObject.Find("Border").SetActive(false);
+            GameObject.Find("Border2").SetActive(false);
+            GameObject.Find("Border3").SetActive(false);
+            GameObject.Find("Border4").SetActive(false);
+            GameObject.Find("Border5").SetActive(false);
+            GameObject.Find("WinText").GetComponent<Text>().text = "";
         }
     }
 
