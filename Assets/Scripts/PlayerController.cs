@@ -93,12 +93,9 @@ public class PlayerController : MonoBehaviour
         {
             if (runonce == 0)
             {
-                //winString = GUI.TextField(new Rect(600, 200, 200, 200), "Player " + winID + winString, 100);
                 GameObject.Find("WinText").GetComponent<Text>().text = "Player " + winID + winString;
                 runonce = 1;
             }
-            //GUI.TextField(new Rect(720, 200, 200, 200), winString, 100);
-            
         }
     }
 }
