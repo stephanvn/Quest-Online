@@ -57,12 +57,18 @@ public class PlayerController : MonoBehaviour
 
         if (time <= 0)
         {
-            GameObject.Find("Border").SetActive(false);
+            GameObject.Find("Border1").SetActive(false);
             GameObject.Find("Border2").SetActive(false);
             GameObject.Find("Border3").SetActive(false);
             GameObject.Find("Border4").SetActive(false);
             GameObject.Find("Border5").SetActive(false);
+            GameObject.Find("Border6").SetActive(false);
             GameObject.Find("WinText").GetComponent<Text>().text = "";
+        }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.yellow;
         }
     }
 
